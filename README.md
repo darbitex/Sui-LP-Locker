@@ -58,6 +58,48 @@ no-double-count, wrapper transferability, composability via `borrow_position`,
 - Testnet: `deploy/smoke/SMOKE-RESULTS.md` — 6 txs, ETH_FAUCET/USDT_FAUCET pool, positive + negative paths.
 - Mainnet: `deploy/mainnet/DEPLOYMENT.md` — 2 txs on Circle SUI/USDC pool, atomic PTB + redeem.
 
+## Source verification
+
+Anyone can independently verify that the on-chain bytecode at
+`0x62d8ca51e77fccbbc8be88905760a84db752a02fb398da115294cb5aa373d23c`
+matches this repository.
+
+Requires `sui` CLI 1.70.2 (the toolchain used at publish time).
+
+```
+git clone https://github.com/darbitex/Sui-LP-Locker.git
+cd Sui-LP-Locker
+git checkout d090f269dab4eede4bccaab8bd1e034062d0b029
+```
+
+Edit `Move.toml` to add `published-at` and set the concrete address:
+
+```toml
+[package]
+name = "DarbitexLpLocker"
+version = "0.1.0"
+edition = "2024.beta"
+published-at = "0x62d8ca51e77fccbbc8be88905760a84db752a02fb398da115294cb5aa373d23c"
+
+[dependencies]
+Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "6d4ec0b0621dd9555753c9ecd5be021b25a0d267", override = true }
+Darbitex = { git = "https://github.com/darbitex/darbitex-sui.git", rev = "3c632ab3158e7fe54636902fe5efa064bbf0c62c" }
+
+[addresses]
+darbitex_lp_locker = "0x62d8ca51e77fccbbc8be88905760a84db752a02fb398da115294cb5aa373d23c"
+```
+
+Then run:
+
+```
+sui client verify-source --silence-warnings
+```
+
+Expected output: `Source verification succeeded!`
+
+This compares freshly-compiled bytecode against the on-chain modules and proves
+the published package was built from this source at the pinned dep revisions.
+
 ## License
 
 Public domain (Unlicense). See `LICENSE`.
