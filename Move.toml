@@ -5,7 +5,7 @@ edition = "2024.beta"
 
 [dependencies]
 Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "6d4ec0b0621dd9555753c9ecd5be021b25a0d267", override = true }
-Darbitex = { local = "../darbitex-sui" }
+Darbitex = { git = "https://github.com/darbitex/darbitex-sui.git", rev = "3c632ab3158e7fe54636902fe5efa064bbf0c62c" }
 
 [addresses]
 darbitex_lp_locker = "0x0"
